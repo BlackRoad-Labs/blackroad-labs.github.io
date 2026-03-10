@@ -1,1207 +1,308 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BlackRoad Labs — Research at the Edge</title>
-  <meta name="description" content="Data science notebooks, MLOps, visualization, and research infrastructure for the next breakthrough.">
-  <meta property="og:title" content="BlackRoad Labs">
-  <meta property="og:description" content="Data science notebooks, MLOps, visualization, and research infrastructure for the next breakthrough.">
-  <meta property="og:url" content="https://github.com/BlackRoad-Labs">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <!-- Stripe Buy Button (static-site compatible, no backend required) -->
-  <script async src="https://js.stripe.com/v3/buy-button.js"></script>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --brand: #00BCD4;
-      --black: #000000;
-      --white: #ffffff;
-      --gray-900: #0a0a0a;
-      --gray-800: #141414;
-      --gray-700: #1e1e1e;
-      --gray-600: #2a2a2a;
-      --gray-400: #666;
-      --gray-200: #aaa;
-      --phi: 1.618;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-      background: var(--black);
-      color: var(--white);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    /* ── HERO ─────────────────────────────────────────── */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 2rem;
-      overflow: hidden;
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 50% -10%, #00BCD428 0%, transparent 70%),
-        radial-gradient(ellipse 60% 40% at 80% 80%, #00BCD415 0%, transparent 60%);
-      pointer-events: none;
-    }
-
-    /* Animated grid */
-    .grid-bg {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(#00BCD408 1px, transparent 1px),
-        linear-gradient(90deg, #00BCD408 1px, transparent 1px);
-      background-size: 50px 50px;
-      animation: gridScroll 20s linear infinite;
-    }
-
-    @keyframes gridScroll {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(50px); }
-    }
-
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      max-width: 820px;
-    }
-
-    .org-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #00BCD418;
-      border: 1px solid #00BCD440;
-      border-radius: 100px;
-      padding: 8px 20px;
-      font-size: 13px;
-      font-weight: 500;
-      color: #00BCD4;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      margin-bottom: 34px;
-      backdrop-filter: blur(10px);
-    }
-
-    .org-badge .dot {
-      width: 6px; height: 6px;
-      background: #00BCD4;
-      border-radius: 50%;
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
-    }
-
-    .hero-icon {
-      font-size: 72px;
-      line-height: 1;
-      margin-bottom: 24px;
-      filter: drop-shadow(0 0 30px #00BCD460);
-    }
-
-    h1 {
-      font-size: clamp(42px, 8vw, 88px);
-      font-weight: 900;
-      line-height: 1.0;
-      letter-spacing: -0.03em;
-      margin-bottom: 16px;
-      background: linear-gradient(135deg, #ffffff 0%, #00BCD4 50%, #ffffff 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      background-size: 200%;
-      animation: shimmer 4s ease-in-out infinite alternate;
-    }
-
-    @keyframes shimmer {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 100% 50%; }
-    }
-
-    .tagline {
-      font-size: clamp(18px, 3vw, 28px);
-      font-weight: 300;
-      color: rgba(255,255,255,0.7);
-      margin-bottom: 24px;
-      letter-spacing: -0.01em;
-    }
-
-    .description {
-      font-size: 17px;
-      line-height: 1.618;
-      color: rgba(255,255,255,0.5);
-      max-width: 600px;
-      margin: 0 auto 48px;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 14px 28px;
-      border-radius: 12px;
-      font-size: 15px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      cursor: pointer;
-      border: none;
-    }
-
-    .btn-primary {
-      background: #00BCD4;
-      color: #fff;
-      box-shadow: 0 0 30px #00BCD450;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 40px #00BCD470;
-    }
-
-    .btn-secondary {
-      background: rgba(255,255,255,0.06);
-      color: rgba(255,255,255,0.8);
-      border: 1px solid rgba(255,255,255,0.12);
-      backdrop-filter: blur(10px);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255,255,255,0.1);
-      transform: translateY(-2px);
-    }
-
-    /* ── TAGS ─────────────────────────────────────────── */
-    .tags-section {
-      padding: 60px 2rem;
-      text-align: center;
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .tags-wrap {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-      max-width: 700px;
-      margin: 0 auto;
-    }
-
-    .tag {
-      display: inline-block;
-      padding: 8px 18px;
-      background: #00BCD415;
-      border: 1px solid #00BCD430;
-      border-radius: 8px;
-      font-size: 13px;
-      font-weight: 500;
-      color: #00BCD4;
-      letter-spacing: 0.03em;
-    }
-
-    /* ── STATS ────────────────────────────────────────── */
-    .stats {
-      display: flex;
-      justify-content: center;
-      gap: 0;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .stat {
-      flex: 1;
-      max-width: 200px;
-      padding: 40px 20px;
-      text-align: center;
-      border-right: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .stat:last-child { border-right: none; }
-
-    .stat-value {
-      font-size: 36px;
-      font-weight: 800;
-      color: #00BCD4;
-      letter-spacing: -0.03em;
-      line-height: 1;
-      margin-bottom: 6px;
-    }
-
-    .stat-label {
-      font-size: 12px;
-      color: rgba(255,255,255,0.4);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    /* ── OLLAMA CHAT ──────────────────────────────────── */
-    .chat-section {
-      padding: 80px 2rem;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      max-width: 860px;
-      margin: 0 auto;
-    }
-
-    .section-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #00BCD418;
-      border: 1px solid #00BCD440;
-      border-radius: 100px;
-      padding: 6px 16px;
-      font-size: 12px;
-      font-weight: 600;
-      color: #00BCD4;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-bottom: 24px;
-    }
-
-    .section-title {
-      font-size: clamp(28px, 5vw, 48px);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      margin-bottom: 12px;
-      color: #fff;
-    }
-
-    .section-sub {
-      font-size: 16px;
-      color: rgba(255,255,255,0.45);
-      margin-bottom: 36px;
-      line-height: 1.6;
-    }
-
-    .chat-config {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-
-    .chat-config input, .chat-config select {
-      flex: 1;
-      min-width: 180px;
-      background: #141414;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 13px;
-      color: #fff;
-      font-family: inherit;
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .chat-config input:focus, .chat-config select:focus {
-      border-color: #00BCD460;
-    }
-
-    .chat-config select option { background: #141414; }
-
-    .chat-window {
-      background: #0d0d0d;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-      overflow: hidden;
-    }
-
-    .chat-header {
-      background: #141414;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      padding: 14px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .chat-header-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .ollama-dot {
-      width: 8px; height: 8px;
-      background: #4CAF50;
-      border-radius: 50%;
-      box-shadow: 0 0 8px #4CAF5080;
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    .chat-header-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.8);
-    }
-
-    .chat-header-sub {
-      font-size: 11px;
-      color: rgba(255,255,255,0.3);
-    }
-
-    .chat-clear-btn {
-      background: none;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 6px;
-      color: rgba(255,255,255,0.4);
-      font-size: 11px;
-      padding: 4px 10px;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .chat-clear-btn:hover {
-      border-color: rgba(255,255,255,0.3);
-      color: rgba(255,255,255,0.7);
-    }
-
-    .chat-messages {
-      height: 380px;
-      overflow-y: auto;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      scroll-behavior: smooth;
-    }
-
-    .chat-messages::-webkit-scrollbar { width: 4px; }
-    .chat-messages::-webkit-scrollbar-track { background: transparent; }
-    .chat-messages::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-
-    .msg {
-      display: flex;
-      gap: 10px;
-      max-width: 85%;
-      animation: msgIn 0.2s ease;
-    }
-
-    @keyframes msgIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    .msg.user { align-self: flex-end; flex-direction: row-reverse; }
-
-    .msg-avatar {
-      width: 28px; height: 28px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px;
-      flex-shrink: 0;
-    }
-
-    .msg.assistant .msg-avatar { background: #00BCD420; border: 1px solid #00BCD440; }
-    .msg.user .msg-avatar { background: #ffffff18; border: 1px solid #ffffff20; }
-
-    .msg-body {
-      background: #1a1a1a;
-      border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 12px;
-      padding: 10px 14px;
-      font-size: 14px;
-      line-height: 1.6;
-      color: rgba(255,255,255,0.85);
-      word-break: break-word;
-      white-space: pre-wrap;
-    }
-
-    .msg.user .msg-body {
-      background: #00BCD420;
-      border-color: #00BCD430;
-    }
-
-    .msg-route {
-      font-size: 10px;
-      color: #00BCD490;
-      margin-bottom: 4px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .chat-input-row {
-      border-top: 1px solid rgba(255,255,255,0.06);
-      padding: 14px 16px;
-      display: flex;
-      gap: 10px;
-      align-items: flex-end;
-      background: #111;
-    }
-
-    #chatInput {
-      flex: 1;
-      background: #1a1a1a;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 14px;
-      color: #fff;
-      font-family: inherit;
-      outline: none;
-      resize: none;
-      min-height: 42px;
-      max-height: 120px;
-      transition: border-color 0.2s;
-      line-height: 1.5;
-    }
-
-    #chatInput:focus { border-color: #00BCD460; }
-
-    #sendBtn {
-      background: #00BCD4;
-      border: none;
-      border-radius: 10px;
-      width: 42px; height: 42px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      flex-shrink: 0;
-    }
-
-    #sendBtn:hover { background: #00ACC1; transform: scale(1.05); }
-    #sendBtn:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
-
-    .chat-hint {
-      padding: 10px 16px 14px;
-      background: #111;
-      font-size: 11px;
-      color: rgba(255,255,255,0.25);
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      border-top: 1px solid rgba(255,255,255,0.04);
-    }
-
-    .chat-hint span { color: #00BCD4; font-weight: 600; }
-
-    .typing-indicator {
-      display: flex;
-      gap: 4px;
-      align-items: center;
-      padding: 4px 0;
-    }
-
-    .typing-indicator span {
-      width: 6px; height: 6px;
-      background: #00BCD4;
-      border-radius: 50%;
-      animation: typing 1.2s ease-in-out infinite;
-    }
-
-    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-
-    @keyframes typing {
-      0%, 100% { opacity: 0.3; transform: translateY(0); }
-      50% { opacity: 1; transform: translateY(-4px); }
-    }
-
-    .chat-error {
-      font-size: 13px;
-      color: #ff6b6b;
-      padding: 8px 12px;
-      background: #ff6b6b12;
-      border: 1px solid #ff6b6b30;
-      border-radius: 8px;
-      margin: 8px 20px;
-    }
-
-    /* ── PRODUCTS / STRIPE ────────────────────────────── */
-    .products-section {
-      padding: 80px 2rem;
-      border-top: 1px solid rgba(255,255,255,0.06);
-      max-width: 1000px;
-      margin: 0 auto;
-    }
-
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 24px;
-      margin-top: 40px;
-    }
-
-    .product-card {
-      background: #0d0d0d;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 20px;
-      padding: 32px 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      transition: border-color 0.2s, transform 0.2s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .product-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, #00BCD4, transparent);
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-
-    .product-card:hover {
-      border-color: #00BCD430;
-      transform: translateY(-4px);
-    }
-
-    .product-card:hover::before { opacity: 1; }
-
-    .product-card.featured {
-      border-color: #00BCD440;
-      background: linear-gradient(135deg, #0d0d0d 0%, #00BCD408 100%);
-    }
-
-    .product-card.featured::before { opacity: 1; }
-
-    .product-badge {
-      display: inline-block;
-      padding: 4px 12px;
-      background: #00BCD420;
-      border: 1px solid #00BCD440;
-      border-radius: 100px;
-      font-size: 11px;
-      font-weight: 700;
-      color: #00BCD4;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      align-self: flex-start;
-    }
-
-    .product-name {
-      font-size: 22px;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: -0.02em;
-    }
-
-    .product-desc {
-      font-size: 14px;
-      color: rgba(255,255,255,0.5);
-      line-height: 1.6;
-    }
-
-    .product-price {
-      display: flex;
-      align-items: baseline;
-      gap: 4px;
-    }
-
-    .price-amount {
-      font-size: 42px;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: -0.04em;
-    }
-
-    .price-period {
-      font-size: 14px;
-      color: rgba(255,255,255,0.4);
-    }
-
-    .product-features {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .product-features li {
-      font-size: 13px;
-      color: rgba(255,255,255,0.6);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .product-features li::before {
-      content: '✓';
-      color: #00BCD4;
-      font-weight: 700;
-      font-size: 12px;
-    }
-
-    .stripe-btn-wrap {
-      margin-top: auto;
-      padding-top: 8px;
-    }
-
-    /* Stripe buy-button custom styling container */
-    .stripe-btn-wrap stripe-buy-button {
-      --background-color: #00BCD4;
-      --hover-background-color: #00ACC1;
-      --border-radius: 10px;
-    }
-
-    /* Fallback buy button (shown when Stripe key not configured) */
-    .btn-buy {
-      width: 100%;
-      justify-content: center;
-      background: #00BCD4;
-      color: #fff;
-      box-shadow: 0 0 24px #00BCD440;
-      padding: 14px;
-      font-size: 15px;
-    }
-
-    .btn-buy:hover {
-      background: #00ACC1;
-      transform: translateY(-2px);
-      box-shadow: 0 8px 32px #00BCD460;
-    }
-
-    .stripe-notice {
-      font-size: 12px;
-      color: rgba(255,255,255,0.25);
-      text-align: center;
-      margin-top: 48px;
-      line-height: 1.6;
-    }
-
-    .stripe-notice a { color: #00BCD4; text-decoration: none; }
-    .stripe-notice a:hover { text-decoration: underline; }
-
-    /* ── FOOTER ───────────────────────────────────────── */
-    footer {
-      padding: 40px 2rem;
-      text-align: center;
-      border-top: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .footer-logo {
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.3);
-      margin-bottom: 8px;
-    }
-
-    .footer-logo span { color: #00BCD4; }
-
-    .footer-copy {
-      font-size: 12px;
-      color: rgba(255,255,255,0.2);
-    }
-
-    /* ── SCROLL INDICATOR ─────────────────────────────── */
-    .scroll-hint {
-      position: absolute;
-      bottom: 32px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px;
-      color: rgba(255,255,255,0.3);
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-    }
-
-    .scroll-arrow {
-      width: 20px;
-      height: 20px;
-      border-right: 2px solid #00BCD460;
-      border-bottom: 2px solid #00BCD460;
-      transform: rotate(45deg);
-      animation: bounce 2s ease-in-out infinite;
-    }
-
-    @keyframes bounce {
-      0%, 100% { transform: rotate(45deg) translateY(0); }
-      50% { transform: rotate(45deg) translateY(6px); }
-    }
-
-    @media (max-width: 600px) {
-      .stats { flex-direction: column; }
-      .stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
-      .chat-config { flex-direction: column; }
-      .products-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlackRoad Labs</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;shape-rendering:geometricPrecision}
+html{-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;-webkit-text-stroke:.2px rgba(255,255,255,.1);scroll-behavior:smooth}
+:root{
+  --g:linear-gradient(90deg,#FF6B2B,#FF2255,#CC00AA,#8844FF,#4488FF,#00D4FF);
+  --g135:linear-gradient(135deg,#FF6B2B,#FF2255,#CC00AA,#8844FF,#4488FF,#00D4FF);
+  --bg:#000;--white:#fff;--black:#000;--border:#1a1a1a;
+  --sg:'Space Grotesk',sans-serif;--jb:'JetBrains Mono',monospace;
+}
+body{background:var(--bg);color:var(--white);font-family:var(--sg);overflow-x:hidden}
+
+/* ═══ GRAD BAR ═══ */
+.grad-bar{height:4px;background:var(--g);image-rendering:crisp-edges}
+
+/* ═══ NAV ═══ */
+nav{display:flex;align-items:center;justify-content:space-between;padding:16px 48px;border-bottom:1px solid var(--border)}
+.nav-logo{font-weight:700;font-size:20px;color:var(--white);display:flex;align-items:center;gap:10px}
+.nav-logo-mark{width:28px;height:4px;border-radius:2px;background:var(--g);image-rendering:crisp-edges}
+.nav-links{display:flex;gap:32px}
+.nav-links a{font-size:14px;font-weight:500;color:var(--white);opacity:.5;text-decoration:none;transition:opacity .2s}
+.nav-links a:hover{opacity:1}
+.btn-outline{padding:8px 20px;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--white);font-size:13px;font-weight:600;cursor:pointer;font-family:var(--sg);transition:border-color .2s}
+.btn-outline:hover{border-color:#444}
+
+/* ═══ HERO ═══ */
+.hero{text-align:center;padding:120px 48px 80px;position:relative}
+.orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:.06;pointer-events:none}
+.orb-1{width:400px;height:400px;background:#4488FF;top:-150px;left:-5%}
+.orb-2{width:350px;height:350px;background:#CC00AA;top:-100px;right:-5%}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:500;color:var(--white);margin-bottom:32px}
+.hero-badge-dot{width:8px;height:8px;border-radius:50%;background:var(--g135)}
+.hero h1{font-size:64px;font-weight:700;color:var(--white);line-height:1.08;margin-bottom:24px;max-width:780px;margin-left:auto;margin-right:auto;letter-spacing:-.02em}
+.hero p{font-size:18px;color:var(--white);opacity:.45;max-width:520px;margin:0 auto 48px;line-height:1.7}
+.hero-cta{display:flex;gap:16px;justify-content:center}
+.btn-lg{padding:14px 36px;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer;font-family:var(--sg)}
+.btn-lg-solid{background:var(--white);color:var(--black);border:none}
+.btn-lg-outline{background:transparent;color:var(--white);border:1px solid var(--border);transition:border-color .2s}
+.btn-lg-outline:hover{border-color:#444}
+
+/* ═══ SECTIONS ═══ */
+.section{max-width:1200px;margin:0 auto;padding:80px 48px}
+.section-label{font-family:var(--jb);font-size:10px;color:var(--white);opacity:.25;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.section-title{font-size:32px;font-weight:700;color:var(--white);margin-bottom:12px;letter-spacing:-.015em}
+.section-desc{font-size:14px;color:var(--white);opacity:.4;max-width:460px;margin-bottom:48px}
+
+/* ═══ RESEARCH PAPERS — lined rows with number ═══ */
+.paper-list{border-top:1px solid var(--border)}
+.paper{display:grid;grid-template-columns:48px 1fr auto;gap:20px;padding:24px 0;border-bottom:1px solid var(--border);align-items:start;transition:opacity .15s}
+.paper:hover{opacity:.8}
+.paper-num{font-family:var(--jb);font-size:28px;font-weight:700;color:var(--white);opacity:.08}
+.paper-title{font-size:16px;font-weight:600;color:var(--white);margin-bottom:4px}
+.paper-abstract{font-size:13px;color:var(--white);opacity:.4;line-height:1.7;max-width:600px}
+.paper-meta{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.paper-tag{padding:3px 8px;border:1px solid var(--border);border-radius:3px;font-family:var(--jb);font-size:10px;color:var(--white);opacity:.35}
+.paper-date{font-family:var(--jb);font-size:11px;color:var(--white);opacity:.2;white-space:nowrap;padding-top:4px}
+
+/* ═══ FOCUS AREAS — outlined cards with gradient line ═══ */
+.focus-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.focus-card{border:1px solid var(--border);border-radius:10px;padding:28px;transition:border-color .2s}
+.focus-card:hover{border-color:#333}
+.focus-line{width:32px;height:3px;border-radius:1px;background:var(--g);margin-bottom:20px;image-rendering:crisp-edges}
+.focus-card h3{font-size:15px;font-weight:600;color:var(--white);margin-bottom:8px}
+.focus-card p{font-size:13px;color:var(--white);opacity:.4;line-height:1.7}
+.focus-card .focus-stat{font-family:var(--jb);font-size:11px;color:var(--white);opacity:.2;margin-top:14px;letter-spacing:.04em}
+
+/* ═══ TIMELINE — vertical line with gradient dots ═══ */
+.timeline{position:relative;padding-left:32px}
+.timeline::before{content:'';position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)}
+.tl-item{position:relative;padding:0 0 48px}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{position:absolute;left:-37px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--g135)}
+.tl-dot.minor{width:8px;height:8px;left:-35px;top:8px;opacity:.4}
+.tl-date{font-family:var(--jb);font-size:11px;color:var(--white);opacity:.2;margin-bottom:6px}
+.tl-title{font-size:16px;font-weight:600;color:var(--white);margin-bottom:6px}
+.tl-desc{font-size:13px;color:var(--white);opacity:.4;line-height:1.7;max-width:560px}
+
+/* ═══ COLLABORATORS — outlined pill row ═══ */
+.collab-row{display:flex;gap:12px;flex-wrap:wrap}
+.collab{display:flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--border);border-radius:20px;transition:border-color .2s}
+.collab:hover{border-color:#333}
+.collab-dot{width:6px;height:6px;border-radius:50%;background:var(--g135)}
+.collab-name{font-size:13px;font-weight:500;color:var(--white);opacity:.6}
+
+/* ═══ CTA ═══ */
+.cta{text-align:center;padding:80px 48px}
+.cta-box{max-width:700px;margin:0 auto;padding:64px;border:1px solid var(--border);border-radius:16px;position:relative;overflow:hidden}
+.cta-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--g)}
+.cta-box h2{font-size:28px;font-weight:700;color:var(--white);margin-bottom:12px;letter-spacing:-.015em}
+.cta-box p{font-size:14px;color:var(--white);opacity:.4;margin-bottom:32px;max-width:400px;margin-left:auto;margin-right:auto}
+
+/* ═══ FOOTER ═══ */
+footer{border-top:1px solid var(--border);padding:48px;display:flex;justify-content:space-between;align-items:center}
+.footer-brand{font-weight:700;font-size:16px;color:var(--white)}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-size:13px;color:var(--white);opacity:.4;text-decoration:none;transition:opacity .2s}
+.footer-links a:hover{opacity:1}
+.footer-copy{font-size:12px;color:var(--white);opacity:.2}
+
+@media(max-width:768px){
+  nav{padding:14px 20px;flex-wrap:wrap;gap:12px}.nav-links{display:none}
+  .hero{padding:80px 20px 60px}.hero h1{font-size:36px}
+  .hero-cta{flex-direction:column;align-items:center}
+  .section{padding:48px 20px}
+  .paper{grid-template-columns:1fr;gap:8px}.paper-num{display:none}
+  .focus-grid{grid-template-columns:1fr}
+  .cta{padding:48px 20px}
+  footer{flex-direction:column;gap:16px;text-align:center;padding:32px 20px}
+}
+</style>
 </head>
 <body>
 
-  <section class="hero">
-    <div class="grid-bg"></div>
-    <div class="hero-content">
-      <div class="org-badge">
-        <span class="dot"></span>
-        Labs Division
-      </div>
-      <div class="hero-icon">🔬</div>
-      <h1>BlackRoad Labs</h1>
-      <p class="tagline">Research at the Edge</p>
-      <p class="description">Data science notebooks, MLOps, visualization, and research infrastructure for the next breakthrough.</p>
-      <div class="hero-actions">
-        <a href="https://github.com/BlackRoad-Labs" class="btn btn-primary">
-          <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
-          View on GitHub
-        </a>
-        <a href="https://blackroad.io" class="btn btn-secondary">
-          🌐 BlackRoad OS
-        </a>
-        <a href="#chat" class="btn btn-secondary">
-          🤖 Ask Ollama
-        </a>
-      </div>
-    </div>
-    <div class="scroll-hint">
-      <div class="scroll-arrow"></div>
-      scroll
-    </div>
-  </section>
+<!-- ═══════════════════════════════════════════════ -->
+<!-- COMPONENT: Gradient Bar                         -->
+<!-- ═══════════════════════════════════════════════ -->
+<div class="grad-bar"></div>
 
-  <section class="tags-section">
-    <div class="tags-wrap">
-      <span class="tag">Data Science</span><span class="tag">MLOps</span><span class="tag">Visualization</span><span class="tag">Research</span><span class="tag">Ollama</span><span class="tag">Self-Hosted AI</span>
-    </div>
-  </section>
+<!-- ═══════════════════════════════════════════════ -->
+<!-- COMPONENT: Navigation                           -->
+<!-- Swap: logo text, link labels                    -->
+<!-- ═══════════════════════════════════════════════ -->
+<nav>
+  <div class="nav-logo"><img src="blackroad-logo.png" alt="BlackRoad" style="width:32px;height:32px;border-radius:50%"> BlackRoad Labs</div>
+  <div class="nav-links">
+    <a href="#papers">Papers</a>
+    <a href="#focus">Focus Areas</a>
+    <a href="#timeline">Timeline</a>
+    <a href="https://blackroad-io.pages.dev">BlackRoad OS Inc</a>
+  </div>
+  <a class="btn-outline" href="https://github.com/blackboxprogramming/quantum-math-lab" target="_blank" style="text-decoration:none">View on GitHub</a>
+</nav>
 
-  <div class="stats">
-    <div class="stat">
-      <div class="stat-value">30K</div>
-      <div class="stat-label">AI Agents</div>
+<!-- ═══════════════════════════════════════════════ -->
+<!-- COMPONENT: Hero                                 -->
+<!-- Swap: badge, h1, subtitle, CTA labels           -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="hero-badge"><div class="hero-badge-dot"></div> Foundational Research</div>
+  <h1>Where math meets machine</h1>
+  <p>BlackRoad Labs explores quantum computing, simulation theory, gematria computation, and experimental mathematics. 94 sections of foundational theory. 1,012 verified equations.</p>
+  <div class="hero-cta">
+    <a class="btn-lg btn-lg-solid" href="#papers" style="text-decoration:none">Read Papers</a>
+    <a class="btn-lg btn-lg-outline" href="#focus" style="text-decoration:none">View Experiments</a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- COMPONENT: Research Papers List                 -->
+<!-- Lined rows with large faded number.             -->
+<!-- Outlined tags. No fills.                        -->
+<!-- Swap: titles, abstracts, tags, dates            -->
+<!-- Add/remove rows as needed.                      -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-label" id="papers">Publications</div>
+  <div class="section-title">Research papers</div>
+  <div class="section-desc">Original research in computational theory, quantum simulation, and mathematical foundations.</div>
+  <div class="paper-list">
+    <div class="paper">
+      <div class="paper-num">01</div>
+      <div>
+        <div class="paper-title">The Trivial Zero: A Computational Proof That Reality Is Self-Referential</div>
+        <div class="paper-abstract">SHA-256 hash chains as evidence of computational reality. Connects Gödel incompleteness, Riemann zeta functions, DNA encoding, and operating system ontology across 94 sections with 1,012 verified equations.</div>
+        <div class="paper-meta"><span class="paper-tag">Simulation Theory</span><span class="paper-tag">Gödel</span><span class="paper-tag">Riemann</span><span class="paper-tag">94 Sections</span></div>
+      </div>
+      <div class="paper-date">Feb 2026</div>
     </div>
-    <div class="stat">
-      <div class="stat-value">17</div>
-      <div class="stat-label">Organizations</div>
+    <div class="paper">
+      <div class="paper-num">02</div>
+      <div>
+        <div class="paper-title">Quantum Framework: State-Vector Circuit Simulation</div>
+        <div class="paper-abstract">Dense complex NumPy state-vector simulator implementing Hadamard, Pauli-X/Y/Z, CNOT gates with projective measurement and state collapse. Includes VQE, QAOA, Grover's, and QFT algorithm implementations.</div>
+        <div class="paper-meta"><span class="paper-tag">Quantum Computing</span><span class="paper-tag">VQE</span><span class="paper-tag">Grover's</span></div>
+      </div>
+      <div class="paper-date">Jan 2026</div>
     </div>
-    <div class="stat">
-      <div class="stat-value">1,800+</div>
-      <div class="stat-label">Repositories</div>
+    <div class="paper">
+      <div class="paper-num">03</div>
+      <div>
+        <div class="paper-title">Unsolved Problem Compendium</div>
+        <div class="paper-abstract">Computational approaches to 10 landmark unsolved problems: Riemann Hypothesis, P vs NP, Navier-Stokes existence and smoothness, Birch and Swinnerton-Dyer conjecture, and six others. Each with numerical experiments.</div>
+        <div class="paper-meta"><span class="paper-tag">P vs NP</span><span class="paper-tag">Navier-Stokes</span><span class="paper-tag">Number Theory</span></div>
+      </div>
+      <div class="paper-date">Dec 2025</div>
     </div>
-    <div class="stat">
-      <div class="stat-value">$0</div>
-      <div class="stat-label">AI Cost Target</div>
+    <div class="paper">
+      <div class="paper-num">04</div>
+      <div>
+        <div class="paper-title">Gematria Computation Engine</div>
+        <div class="paper-abstract">Numerical encoding system mapping alphabetic characters to mathematical values. 156,675 FTS5 index entries across <a href="https://blackroad-assets.pages.dev#memory" style="color:var(--white);opacity:.5;text-decoration:underline;text-underline-offset:3px">228 SQLite databases</a> powering pattern recognition and cross-reference analysis.</div>
+        <div class="paper-meta"><span class="paper-tag">Gematria</span><span class="paper-tag">FTS5</span><span class="paper-tag">Pattern Analysis</span></div>
+      </div>
+      <div class="paper-date">2025</div>
     </div>
   </div>
+</section>
 
-  <!-- ── OLLAMA CHAT ──────────────────────────────────── -->
-  <section class="chat-section" id="chat">
-    <div class="section-label">🤖 Self-Hosted AI</div>
-    <h2 class="section-title">Talk to Ollama</h2>
-    <p class="section-sub">
-      All requests go directly to your local Ollama instance — no external providers.<br>
-      Use <span style="color:#00BCD4">@ollama</span>, <span style="color:#00BCD4">@copilot</span>, <span style="color:#00BCD4">@lucidia</span>, or <span style="color:#00BCD4">@blackboxprogramming</span> to route to your machine.
-    </p>
+<!-- ═══════════════════════════════════════════════ -->
+<!-- COMPONENT: Focus Areas Grid (3-col)             -->
+<!-- Outlined cards. Gradient accent line.           -->
+<!-- Swap: titles, descriptions, stat lines          -->
+<!-- Use 3 or 6 cards.                               -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-label" id="focus">Disciplines</div>
+  <div class="section-title">Focus areas</div>
+  <div class="section-desc">Six research domains spanning pure mathematics, quantum computing, and computational philosophy.</div>
+  <div class="focus-grid">
+    <div class="focus-card"><div class="focus-line"></div><h3>Quantum Simulation</h3><p>State-vector circuit simulator with Bell states, entanglement, and projective measurement. Real quantum algorithm implementations.</p><div class="focus-stat">VQE · QAOA · Grover's · QFT</div></div>
+    <div class="focus-card"><div class="focus-line"></div><h3>Simulation Theory</h3><p>Computational evidence for self-referential reality. Hash chains, Gödel encoding, and operating system ontology as proof framework.</p><div class="focus-stat">94 sections · 1,012 equations</div></div>
+    <div class="focus-card"><div class="focus-line"></div><h3>Gematria Computation</h3><p>Algorithmic number-letter mapping with FTS5 full-text search across 228 databases. Pattern recognition at scale.</p><div class="focus-stat">156,675 indexed entries</div></div>
+    <div class="focus-card"><div class="focus-line"></div><h3>Number Theory</h3><p>Riemann zeta function analysis, prime distribution, and computational approaches to the Riemann Hypothesis.</p><div class="focus-stat">Riemann · Primes · Zeta zeros</div></div>
+    <div class="focus-card"><div class="focus-line"></div><h3>Emergence Research</h3><p>Experimental trinary logic and emergence simulations. Investigating how complex behavior arises from simple computational rules.</p><div class="focus-stat">Trinary · Cellular automata</div></div>
+    <div class="focus-card"><div class="focus-line"></div><h3>Computational Philosophy</h3><p>Formal proofs connecting Gödel incompleteness, Lorenz attractors, Mandelbrot sets, and DNA encoding to computational substrates.</p><div class="focus-stat">Gödel · Lorenz · Mandelbrot</div></div>
+  </div>
+</section>
 
-    <div class="chat-config">
-      <input type="text" id="ollamaUrl" value="http://localhost:11434" placeholder="Ollama URL (e.g. http://localhost:11434)">
-      <input type="text" id="ollamaModel" value="llama3" placeholder="Model (e.g. llama3, mistral, codellama)">
-    </div>
+<!-- ═══════════════════════════════════════════════ -->
+<!-- COMPONENT: Research Timeline                    -->
+<!-- Vertical line (border). Gradient dots.           -->
+<!-- Major = full dot, minor = faded dot.            -->
+<!-- Swap: dates, titles, descriptions               -->
+<!-- Add/remove items as needed.                     -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-label" id="timeline">History</div>
+  <div class="section-title">Research timeline</div>
+  <div class="section-desc">Major milestones from the founding of the research program to present.</div>
+  <div class="timeline">
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">February 2026</div><div class="tl-title">The Trivial Zero published</div><div class="tl-desc">94-section paper connecting SHA-256 hash chains, Gödel incompleteness, Riemann zeta, and DNA encoding into a unified computational proof of self-referential reality.</div></div>
+    <div class="tl-item"><div class="tl-dot minor"></div><div class="tl-date">January 2026</div><div class="tl-title">Quantum Framework v1.0</div><div class="tl-desc">State-vector simulator with VQE, QAOA, Grover's, and QFT implementations. Full pytest suite. Open-sourced on GitHub.</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">December 2025</div><div class="tl-title">Unsolved problem compendium</div><div class="tl-desc">Computational approaches to 10 landmark unsolved problems including P vs NP, Riemann Hypothesis, and Navier-Stokes. Numerical experiments for each.</div></div>
+    <div class="tl-item"><div class="tl-dot minor"></div><div class="tl-date">2025</div><div class="tl-title">Gematria engine reaches 156K entries</div><div class="tl-desc">FTS5 full-text search index across 228 SQLite databases. Pattern recognition and cross-reference analysis at scale.</div></div>
+    <div class="tl-item"><div class="tl-dot"></div><div class="tl-date">2024</div><div class="tl-title">BlackRoad Labs founded</div><div class="tl-desc">Research division established within BlackRoad OS Inc. Initial focus: computational philosophy, gematria systems, and mathematical foundations.</div></div>
+  </div>
+</section>
 
-    <div class="chat-window">
-      <div class="chat-header">
-        <div class="chat-header-left">
-          <div class="ollama-dot"></div>
-          <div>
-            <div class="chat-header-title">Ollama — Local AI</div>
-            <div class="chat-header-sub" id="chatStatus">Connected to your machine · no cloud</div>
-          </div>
-        </div>
-        <button class="chat-clear-btn" onclick="clearChat()">Clear</button>
-      </div>
-      <div class="chat-messages" id="chatMessages">
-        <div class="msg assistant">
-          <div class="msg-avatar">🦙</div>
-          <div>
-            <div class="msg-route">→ Ollama (local)</div>
-            <div class="msg-body">Hey! I'm running on your local Ollama instance. Type a message or use <strong>@ollama</strong>, <strong>@copilot</strong>, <strong>@lucidia</strong>, or <strong>@blackboxprogramming</strong> — they all route here.</div>
-          </div>
-        </div>
-      </div>
-      <div id="chatError"></div>
-      <div class="chat-input-row">
-        <textarea id="chatInput" rows="1" placeholder="Message Ollama… (or start with @ollama, @copilot, @lucidia, @blackboxprogramming)"></textarea>
-        <button id="sendBtn" onclick="sendMessage()">
-          <svg width="18" height="18" fill="none" stroke="#fff" stroke-width="2" viewBox="0 0 24 24">
-            <line x1="22" y1="2" x2="11" y2="13"></line>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-          </svg>
-        </button>
-      </div>
-      <div class="chat-hint">
-        All of these route to Ollama on your machine:
-        <span>@ollama</span> <span>@copilot</span> <span>@lucidia</span> <span>@blackboxprogramming</span>
-        · Press <span>Enter</span> to send · <span>Shift+Enter</span> for newline
-      </div>
-    </div>
-  </section>
+<!-- ═══════════════════════════════════════════════ -->
+<!-- COMPONENT: Collaborators Row                    -->
+<!-- Outlined pills with gradient dots.              -->
+<!-- Swap: names. Add/remove as needed.              -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="section">
+  <div class="section-label">Tools</div>
+  <div class="section-title">Research stack</div>
+  <div class="section-desc">Open-source tools and frameworks powering our research.</div>
+  <div class="collab-row">
+    <div class="collab"><div class="collab-dot"></div><span class="collab-name">Python</span></div>
+    <div class="collab"><div class="collab-dot"></div><span class="collab-name">NumPy</span></div>
+    <div class="collab"><div class="collab-dot"></div><span class="collab-name">SQLite / FTS5</span></div>
+    <a href="https://blackroadai-com.pages.dev#models" class="collab" style="text-decoration:none"><div class="collab-dot"></div><span class="collab-name">Ollama</span></a>
+    <a href="https://blackroad-infra.pages.dev#accelerators" class="collab" style="text-decoration:none"><div class="collab-dot"></div><span class="collab-name">Hailo-8</span></a>
+    <div class="collab"><div class="collab-dot"></div><span class="collab-name">pytest</span></div>
+    <a href="https://blackroad-infra.pages.dev#fleet" class="collab" style="text-decoration:none"><div class="collab-dot"></div><span class="collab-name">Raspberry Pi 5</span></a>
+  </div>
+</section>
 
-  <!-- ── PRODUCTS / STRIPE ────────────────────────────── -->
-  <section class="products-section" id="products">
-    <div class="section-label">💳 BlackRoad Commerce</div>
-    <h2 class="section-title">Products &amp; Plans</h2>
-    <p class="section-sub">Powered by Stripe — secure checkout, zero friction.</p>
+<!-- ═══════════════════════════════════════════════ -->
+<!-- COMPONENT: CTA Box                              -->
+<!-- Outlined with gradient top bar.                 -->
+<!-- Swap: headline, description, button label       -->
+<!-- ═══════════════════════════════════════════════ -->
+<section class="cta">
+  <div class="cta-box">
+    <h2>Explore the source</h2>
+    <p>All research code is open-source. Clone the repos, run the simulations, verify the proofs.</p>
+    <a class="btn-lg btn-lg-solid" href="https://github.com/blackboxprogramming/quantum-math-lab" target="_blank" style="text-decoration:none">View on GitHub</a>
+  </div>
+</section>
 
-    <div class="products-grid">
+<section class="section" style="padding-bottom:0">
+  <div class="section-label">Related</div>
+  <div class="section-title">Go deeper</div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:24px">
+    <a href="https://blackroadai-com.pages.dev" style="text-decoration:none;padding:8px 18px;border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:500;color:var(--white);opacity:.5;display:inline-flex;align-items:center;gap:8px"><div style="width:6px;height:6px;border-radius:50%;background:var(--g135)"></div> 6 AI Agents</a>
+    <a href="https://blackroad-infra.pages.dev#accelerators" style="text-decoration:none;padding:8px 18px;border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:500;color:var(--white);opacity:.5;display:inline-flex;align-items:center;gap:8px"><div style="width:6px;height:6px;border-radius:50%;background:var(--g135)"></div> 52 TOPS Hailo-8</a>
+    <a href="https://blackroad-assets.pages.dev#memory" style="text-decoration:none;padding:8px 18px;border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:500;color:var(--white);opacity:.5;display:inline-flex;align-items:center;gap:8px"><div style="width:6px;height:6px;border-radius:50%;background:var(--g135)"></div> 228 SQLite Databases</a>
+    <a href="https://blackroad-metaverse.pages.dev" style="text-decoration:none;padding:8px 18px;border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:500;color:var(--white);opacity:.5;display:inline-flex;align-items:center;gap:8px"><div style="width:6px;height:6px;border-radius:50%;background:var(--g135)"></div> Simulation Engine</a>
+    <a href="https://education-blackroad-io.pages.dev" style="text-decoration:none;padding:8px 18px;border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:500;color:var(--white);opacity:.5;display:inline-flex;align-items:center;gap:8px"><div style="width:6px;height:6px;border-radius:50%;background:var(--g135)"></div> Education Platform</a>
+    <a href="https://blackroad-infra.pages.dev#fleet" style="text-decoration:none;padding:8px 18px;border:1px solid var(--border);border-radius:20px;font-size:12px;font-weight:500;color:var(--white);opacity:.5;display:inline-flex;align-items:center;gap:8px"><div style="width:6px;height:6px;border-radius:50%;background:var(--g135)"></div> Compute Fleet</a>
+  </div>
+</section>
 
-      <!-- Starter -->
-      <div class="product-card">
-        <div class="product-badge">Starter</div>
-        <div class="product-name">BlackRoad Starter</div>
-        <div class="product-desc">Self-hosted AI stack, Ollama integration, and private network access for individuals.</div>
-        <div class="product-price">
-          <div class="price-amount">$29</div>
-          <div class="price-period">/ mo</div>
-        </div>
-        <ul class="product-features">
-          <li>Ollama on your hardware</li>
-          <li>1 self-hosted agent</li>
-          <li>Private network access</li>
-          <li>Community support</li>
-        </ul>
-        <div class="stripe-btn-wrap" id="stripe-starter">
-          <!-- Replace data-buy-button-id and data-publishable-key with your Stripe values -->
-          <!-- <stripe-buy-button
-            data-buy-button-id="REPLACE_WITH_BUY_BUTTON_ID"
-            data-publishable-key="REPLACE_WITH_PUBLISHABLE_KEY">
-          </stripe-buy-button> -->
-          <button class="btn btn-primary btn-buy" onclick="stripeCheckout('starter')">Get Started →</button>
-        </div>
-      </div>
-
-      <!-- Pro (featured) -->
-      <div class="product-card featured">
-        <div class="product-badge">Most Popular</div>
-        <div class="product-name">BlackRoad Pro</div>
-        <div class="product-desc">Full agent fleet, all AI aliases, Cloudflare + Railway integration, and Lucidia access.</div>
-        <div class="product-price">
-          <div class="price-amount">$99</div>
-          <div class="price-period">/ mo</div>
-        </div>
-        <ul class="product-features">
-          <li>Unlimited Ollama models</li>
-          <li>All @mention aliases</li>
-          <li>Lucidia + full agent fleet</li>
-          <li>Cloudflare &amp; Railway ready</li>
-          <li>Priority support</li>
-        </ul>
-        <div class="stripe-btn-wrap" id="stripe-pro">
-          <!-- Replace data-buy-button-id and data-publishable-key with your Stripe values -->
-          <!-- <stripe-buy-button
-            data-buy-button-id="REPLACE_WITH_BUY_BUTTON_ID"
-            data-publishable-key="REPLACE_WITH_PUBLISHABLE_KEY">
-          </stripe-buy-button> -->
-          <button class="btn btn-primary btn-buy" onclick="stripeCheckout('pro')">Get Pro →</button>
-        </div>
-      </div>
-
-      <!-- Enterprise -->
-      <div class="product-card">
-        <div class="product-badge">Enterprise</div>
-        <div class="product-name">BlackRoad OS</div>
-        <div class="product-desc">Full BlackRoad OS deployment, 30K agent fleet, custom MLOps pipeline, and SLA.</div>
-        <div class="product-price">
-          <div class="price-amount">$499</div>
-          <div class="price-period">/ mo</div>
-        </div>
-        <ul class="product-features">
-          <li>30K AI agent fleet</li>
-          <li>Custom Ollama models</li>
-          <li>Dedicated infrastructure</li>
-          <li>Stripe + Vercel + Railway</li>
-          <li>SLA &amp; dedicated support</li>
-        </ul>
-        <div class="stripe-btn-wrap" id="stripe-enterprise">
-          <!-- Replace data-buy-button-id and data-publishable-key with your Stripe values -->
-          <!-- <stripe-buy-button
-            data-buy-button-id="REPLACE_WITH_BUY_BUTTON_ID"
-            data-publishable-key="REPLACE_WITH_PUBLISHABLE_KEY">
-          </stripe-buy-button> -->
-          <button class="btn btn-primary btn-buy" onclick="stripeCheckout('enterprise')">Contact Sales →</button>
-        </div>
-      </div>
-
-    </div>
-
-    <p class="stripe-notice">
-      Payments powered by <a href="https://stripe.com" target="_blank" rel="noopener">Stripe</a>.
-      To activate live checkout, add your Stripe Buy Button IDs and publishable key to the product cards above.<br>
-      Create Buy Buttons at <a href="https://dashboard.stripe.com/payment-links" target="_blank" rel="noopener">dashboard.stripe.com/payment-links</a>.
-    </p>
-  </section>
-
-  <footer>
-    <div class="footer-logo">
-      <span>BlackRoad OS</span>, Inc.
-    </div>
-    <div class="footer-copy">© 2026 BlackRoad OS, Inc. All rights reserved. Proprietary — not open source.</div>
-  </footer>
-
-  <script>
-    /* ── OLLAMA CHAT ENGINE ────────────────────────────── */
-
-    // All these @mentions route to the local Ollama instance — no external providers
-    const OLLAMA_ALIASES = ['@ollama', '@copilot', '@lucidia', '@blackboxprogramming'];
-
-    let conversationHistory = [];
-    let isStreaming = false;
-
-    function getOllamaUrl() {
-      return (document.getElementById('ollamaUrl').value || 'http://localhost:11434').replace(/\/$/, '');
-    }
-
-    function getModel() {
-      return document.getElementById('ollamaModel').value.trim() || 'llama3';
-    }
-
-    // Strip any @alias prefix from the user message and identify the route.
-    // If the message is *only* an alias with no body, keep the alias as the
-    // text so Ollama still receives a non-empty prompt.
-    function parseMessage(raw) {
-      const trimmed = raw.trim();
-      for (const alias of OLLAMA_ALIASES) {
-        if (trimmed.toLowerCase().startsWith(alias)) {
-          const body = trimmed.slice(alias.length).trim();
-          return { text: body || alias, route: alias };
-        }
-      }
-      return { text: trimmed, route: null };
-    }
-
-    function appendMessage(role, text, route) {
-      const container = document.getElementById('chatMessages');
-      const msg = document.createElement('div');
-      msg.className = 'msg ' + role;
-
-      const avatar = document.createElement('div');
-      avatar.className = 'msg-avatar';
-      avatar.textContent = role === 'assistant' ? '🦙' : '👤';
-
-      const inner = document.createElement('div');
-
-      if (role === 'assistant' || route) {
-        const routeEl = document.createElement('div');
-        routeEl.className = 'msg-route';
-        routeEl.textContent = '→ Ollama (local' + (route ? ' · ' + route : '') + ')';
-        inner.appendChild(routeEl);
-      }
-
-      const body = document.createElement('div');
-      body.className = 'msg-body';
-      body.textContent = text;
-      inner.appendChild(body);
-
-      msg.appendChild(avatar);
-      msg.appendChild(inner);
-      container.appendChild(msg);
-      container.scrollTop = container.scrollHeight;
-      return body; // return body so we can stream into it
-    }
-
-    function showTyping() {
-      const container = document.getElementById('chatMessages');
-      const msg = document.createElement('div');
-      msg.className = 'msg assistant';
-      msg.id = 'typingIndicator';
-
-      const avatar = document.createElement('div');
-      avatar.className = 'msg-avatar';
-      avatar.textContent = '🦙';
-
-      const inner = document.createElement('div');
-      const routeEl = document.createElement('div');
-      routeEl.className = 'msg-route';
-      routeEl.textContent = '→ Ollama (local)';
-      inner.appendChild(routeEl);
-
-      const indicator = document.createElement('div');
-      indicator.className = 'typing-indicator';
-      indicator.innerHTML = '<span></span><span></span><span></span>';
-      inner.appendChild(indicator);
-
-      msg.appendChild(avatar);
-      msg.appendChild(inner);
-      container.appendChild(msg);
-      container.scrollTop = container.scrollHeight;
-    }
-
-    function removeTyping() {
-      const el = document.getElementById('typingIndicator');
-      if (el) el.remove();
-    }
-
-    function setError(msg) {
-      const el = document.getElementById('chatError');
-      el.innerHTML = msg ? '<div class="chat-error">' + msg + '</div>' : '';
-    }
-
-    async function sendMessage() {
-      if (isStreaming) return;
-      const input = document.getElementById('chatInput');
-      const raw = input.value.trim();
-      if (!raw) return;
-
-      const { text, route } = parseMessage(raw);
-      input.value = '';
-      input.style.height = 'auto';
-      setError('');
-
-      // Show user message
-      appendMessage('user', raw, null);
-
-      // Add to history (always send clean text to Ollama)
-      conversationHistory.push({ role: 'user', content: text });
-
-      isStreaming = true;
-      document.getElementById('sendBtn').disabled = true;
-      document.getElementById('chatStatus').textContent = 'Waiting for Ollama…';
-
-      showTyping();
-
-      try {
-        const res = await fetch(getOllamaUrl() + '/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            model: getModel(),
-            messages: conversationHistory,
-            stream: true
-          })
-        });
-
-        if (!res.ok) {
-          throw new Error('Ollama returned HTTP ' + res.status + '. Is Ollama running at ' + getOllamaUrl() + '?');
-        }
-
-        removeTyping();
-
-        // Create the assistant message bubble (empty, will stream into it)
-        const bubble = appendMessage('assistant', '', route);
-        let fullText = '';
-
-        const reader = res.body.getReader();
-        const decoder = new TextDecoder();
-
-        document.getElementById('chatStatus').textContent = 'Streaming from Ollama…';
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-          const chunk = decoder.decode(value, { stream: true });
-          // Each line is a JSON object
-          for (const line of chunk.split('\n')) {
-            if (!line.trim()) continue;
-            try {
-              const obj = JSON.parse(line);
-              const token = obj.message?.content || '';
-              fullText += token;
-              bubble.textContent = fullText;
-              document.getElementById('chatMessages').scrollTop = document.getElementById('chatMessages').scrollHeight;
-            } catch (_) { /* partial line, skip */ }
-          }
-        }
-
-        conversationHistory.push({ role: 'assistant', content: fullText });
-        document.getElementById('chatStatus').textContent = 'Connected to your machine · no cloud';
-
-      } catch (err) {
-        removeTyping();
-        let msg = err.message || String(err);
-        if (msg.includes('fetch') || msg.includes('Failed') || msg.includes('NetworkError')) {
-          msg = 'Cannot reach Ollama at <strong>' + getOllamaUrl() + '</strong>. '
-              + 'Make sure Ollama is running (<code>ollama serve</code>) and CORS is enabled '
-              + '(<code>OLLAMA_ORIGINS=* ollama serve</code>).';
-        }
-        setError(msg);
-        // Only pop the user message we added if it is still there
-        if (conversationHistory.length > 0 &&
-            conversationHistory[conversationHistory.length - 1].role === 'user') {
-          conversationHistory.pop();
-        }
-        document.getElementById('chatStatus').textContent = 'Disconnected — check Ollama';
-      } finally {
-        isStreaming = false;
-        document.getElementById('sendBtn').disabled = false;
-        input.focus();
-      }
-    }
-
-    function clearChat() {
-      conversationHistory = [];
-      const container = document.getElementById('chatMessages');
-      container.innerHTML = '';
-      appendMessage('assistant', 'Chat cleared. Ready for your next message.', null);
-      setError('');
-    }
-
-    // Auto-resize textarea, send on Enter (Shift+Enter for newline)
-    document.getElementById('chatInput').addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage();
-      }
-    });
-
-    document.getElementById('chatInput').addEventListener('input', function () {
-      this.style.height = 'auto';
-      this.style.height = Math.min(this.scrollHeight, 120) + 'px';
-    });
-
-    /* ── STRIPE CHECKOUT ──────────────────────────────── */
-    // ▼ CONFIGURE: Replace each URL with your Stripe Payment Link.
-    //   Create links at: https://dashboard.stripe.com/payment-links
-    const STRIPE_LINKS = {
-      starter:    'https://buy.stripe.com/REPLACE_STARTER',
-      pro:        'https://buy.stripe.com/REPLACE_PRO',
-      enterprise: 'https://buy.stripe.com/REPLACE_ENTERPRISE'
-    };
-
-    const STRIPE_SETUP_GUIDE = 'https://dashboard.stripe.com/payment-links';
-
-    function stripeCheckout(plan) {
-      const url = STRIPE_LINKS[plan];
-      if (!url || url.includes('REPLACE_')) {
-        alert(
-          'Stripe Payment Link not configured for the "' + plan + '" plan.\n\n'
-          + 'To activate:\n'
-          + '1. Go to ' + STRIPE_SETUP_GUIDE + '\n'
-          + '2. Create a Payment Link for this plan\n'
-          + '3. Paste the link URL into STRIPE_LINKS["' + plan + '"] at the top of the <script> block'
-        );
-        return;
-      }
-      window.open(url, '_blank', 'noopener');
-    }
-  </script>
+<footer>
+  <div class="footer-brand"><a href="https://blackroad-io.pages.dev" style="color:inherit;text-decoration:none">BlackRoad Labs</a></div>
+  <div class="footer-links">
+    <a href="#papers">Papers</a>
+    <a href="https://blackroadai-com.pages.dev">AI</a>
+    <a href="https://blackroad-assets.pages.dev">Archive</a>
+    <a href="https://blackroad-metaverse.pages.dev">Interactive</a>
+    <a href="https://github.com/blackboxprogramming/simulation-theory" target="_blank">GitHub</a>
+    <a href="https://blackroad-io.pages.dev">OS Inc</a>
+  </div>
+  <div class="footer-copy">&copy; 2026 BlackRoad Labs. All rights reserved.</div>
+</footer>
+<div class="grad-bar"></div>
 
 </body>
 </html>
